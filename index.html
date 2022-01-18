@@ -299,6 +299,7 @@
       iconLink.ontouchstart = dragMouseDown;
 
       function dragMouseDown(e) {
+        e.preventDefault()
         document.documentElement.style.overflow = 'hidden';
 
         document.onmouseup = closeDragElement;
@@ -318,7 +319,7 @@
 
         elmnt.style.bottom = offset < 0 ? 0 : offset > window.innerHeight - elmnt.offsetHeight / 2 - 30 ? window.innerHeight - elmnt.offsetHeight / 2 - 30 : offset + "px";
         elmnt.style.right = (window.innerWidth - clientX - elmnt.offsetWidth / 2 + 10) + "px";
-
+        e.returnValue - false
       }
 
       function closeDragElement(e) {
