@@ -299,8 +299,7 @@
       iconLink.ontouchstart = dragMouseDown;
 
       function dragMouseDown(e) {
-
-        e.preventDefault();
+        document.documentElement.style.overflow = 'hidden';
 
         document.onmouseup = closeDragElement;
         document.ontouchend = closeDragElement;
@@ -308,13 +307,9 @@
         document.onmousemove = elementDrag;
         document.ontouchmove = elementDrag;
 
-        e.returnValue = false;
       }
 
       function elementDrag(e) {
-        if (e.type === 'mousemove') {
-          e.preventDefault();
-        }
         const offset = window.innerHeight - clientY - elmnt.offsetHeight / 2 - 10
 
         iconLink.style.pointerEvents = 'none'
@@ -324,15 +319,16 @@
         elmnt.style.bottom = offset < 0 ? 0 : offset > window.innerHeight - elmnt.offsetHeight / 2 - 30 ? window.innerHeight - elmnt.offsetHeight / 2 - 30 : offset + "px";
         elmnt.style.right = (window.innerWidth - clientX - elmnt.offsetWidth / 2 + 10) + "px";
 
-        e.returnValue = false;
       }
 
       function closeDragElement(e) {
-
         document.onmouseup = null;
         document.onmousemove = null;
         document.ontouchend = null
         document.ontouchmove = null
+
+        document.documentElement.style.overflow = 'auto';
+
         setTimeout(() => {
           iconLink.style.pointerEvents = 'auto'
         }, duration)
@@ -367,7 +363,6 @@
             player.cancel()
           }
         }
-        e.returnValue = false;
       }
     }
 
