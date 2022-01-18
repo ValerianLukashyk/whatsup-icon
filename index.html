@@ -297,40 +297,38 @@
     function dragElement(elmnt) {
       iconLink.onmousedown = dragMouseDown;
       iconLink.ontouchstart = dragMouseDown;
-      
+
       function dragMouseDown(e) {
-        if (e.type === 'mousedown') {
-          e.preventDefault();
-        }
+
+        e.preventDefault();
+
         document.onmouseup = closeDragElement;
         document.ontouchend = closeDragElement;
 
         document.onmousemove = elementDrag;
         document.ontouchmove = elementDrag;
+
         e.returnValue = false;
       }
-      
+
       function elementDrag(e) {
         if (e.type === 'mousemove') {
           e.preventDefault();
         }
         const offset = window.innerHeight - clientY - elmnt.offsetHeight / 2 - 10
-        
+
         iconLink.style.pointerEvents = 'none'
         clientX = e.clientX || e.touches[0].clientX + iconLink.offsetWidth + 10
         clientY = e.clientY || e.touches[0].clientY
-        // if (offset < 0) {
-        //   elmnt.style.bottom = 0 + "px";
-        //   console.log(window.innerHeight)
-        // } else if (offset > window.innerHeight) {
-        //   elmnt.style.bottom = window.innerHeight + "px";
-        // }
-        elmnt.style.bottom = offset < 0 ? 0 : offset > window.innerHeight - elmnt.offsetHeight / 2 - 30 ? window.innerHeight - elmnt.offsetHeight/2 -10 : offset + "px";
-        elmnt.style.right = (window.innerWidth - clientX - elmnt.offsetWidth / 2 +10) + "px";
+
+        elmnt.style.bottom = offset < 0 ? 0 : offset > window.innerHeight - elmnt.offsetHeight / 2 - 30 ? window.innerHeight - elmnt.offsetHeight / 2 - 30 : offset + "px";
+        elmnt.style.right = (window.innerWidth - clientX - elmnt.offsetWidth / 2 + 10) + "px";
+
         e.returnValue = false;
       }
 
       function closeDragElement(e) {
+
         document.onmouseup = null;
         document.onmousemove = null;
         document.ontouchend = null
@@ -341,7 +339,7 @@
 
         // MAKE IT STICKY WHEN DRAG IS FINISHED
         const offset = window.innerWidth - clientX - elmnt.offsetWidth / 2 + 10
-        const offsetRight = window.innerWidth/2 - elmnt.offsetWidth / 2 + 10
+        const offsetRight = window.innerWidth / 2 - elmnt.offsetWidth / 2 + 10
 
         if (offset > -560 && offset < offsetRight) {
           const player = elmnt.animate([
@@ -365,14 +363,14 @@
             fill: 'forwards'
           });
           player.onfinish = function (e) {
-            elmnt.style.right = window.innerWidth - elmnt.offsetWidth / 2 - offset +'px'
+            elmnt.style.right = window.innerWidth - elmnt.offsetWidth / 2 - offset + 'px'
             player.cancel()
           }
         }
         e.returnValue = false;
       }
     }
-    
+
     // SHOW MESSAGE ON HOVER
     iconLink.addEventListener('mouseenter', () => {
       messageLink.style.opacity = 1
