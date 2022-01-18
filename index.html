@@ -299,7 +299,8 @@
       function dragMouseDown(e) {
         if(e.type === 'mousedown') {
           e.preventDefault();
-        }    
+        }
+        
         document.onmouseup = closeDragElement;
         document.ontouchend = closeDragElement;
 
@@ -311,6 +312,7 @@
         if(e.type === 'mousemove') {
           e.preventDefault();
         }
+        iconLink.style.pointerEvents = 'none'
         const clientX = e.clientX || e.touches[0].clientX + iconLink.offsetWidth + 10
         const clientY = e.clientY || e.touches[0].clientY
 
@@ -324,6 +326,10 @@
         document.onmousemove = null;
         document.ontouchend = null
         document.ontouchmove = null
+        setTimeout(()=>{
+          iconLink.style.pointerEvents = 'auto'
+        }, 400)
+        
       }
     }
 
