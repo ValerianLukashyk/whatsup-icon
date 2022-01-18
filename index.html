@@ -142,7 +142,7 @@
     #whatsapp-widget.ww-normal .ww-text {
       font-size: 17px;
       padding: 12px;
-      line-height: 19px;
+      line-height: 16px;
     }
 
     #whatsapp-widget svg {
@@ -310,15 +310,16 @@
       }
       
       function elementDrag(e) {
-        if (e.type === 'mousemove') {
-          e.preventDefault();
-        }
+        // if (e.type === 'mousemove') {
+        //   e.preventDefault();
+        // }
         iconLink.style.pointerEvents = 'none'
         clientX = e.clientX || e.touches[0].clientX + iconLink.offsetWidth + 10
         clientY = e.clientY || e.touches[0].clientY
 
         elmnt.style.bottom = (window.innerHeight - clientY - elmnt.offsetHeight / 2 - 10) + "px";
         elmnt.style.right = (window.innerWidth - clientX - elmnt.offsetWidth / 2 +10) + "px";
+        return false
       }
 
       function closeDragElement(e) {
@@ -333,6 +334,7 @@
         // MAKE IT STICKY WHEN DRAG IS FINISHED
         const offset = window.innerWidth - clientX - elmnt.offsetWidth / 2 + 10
         const offsetRight = window.innerWidth/2 - elmnt.offsetWidth / 2 + 10
+
         if (offset > -60 && offset < offsetRight) {
           const player = elmnt.animate([
             { right: rightStickyPosition }
