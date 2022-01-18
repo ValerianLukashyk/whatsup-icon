@@ -314,11 +314,18 @@
         if (e.type === 'mousemove') {
           e.preventDefault();
         }
+        const offset = window.innerHeight - clientY - elmnt.offsetHeight / 2 - 10
+        
         iconLink.style.pointerEvents = 'none'
         clientX = e.clientX || e.touches[0].clientX + iconLink.offsetWidth + 10
         clientY = e.clientY || e.touches[0].clientY
-
-        elmnt.style.bottom = (window.innerHeight - clientY - elmnt.offsetHeight / 2 - 10) + "px";
+        // if (offset < 0) {
+        //   elmnt.style.bottom = 0 + "px";
+        //   console.log(window.innerHeight)
+        // } else if (offset > window.innerHeight) {
+        //   elmnt.style.bottom = window.innerHeight + "px";
+        // }
+        elmnt.style.bottom = offset < 0 ? 0 : offset > window.innerHeight - elmnt.offsetHeight / 2 - 30 ? window.innerHeight - elmnt.offsetHeight/2 -10 : offset + "px";
         elmnt.style.right = (window.innerWidth - clientX - elmnt.offsetWidth / 2 +10) + "px";
         e.returnValue = false;
       }
