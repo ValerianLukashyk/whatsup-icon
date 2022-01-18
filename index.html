@@ -312,6 +312,7 @@
       }
 
       function elementDrag(e) {
+        document.documentElement.style.overflow = 'hidden';
         // e.preventDefault()
         const offset = window.innerHeight - clientY - elmnt.offsetHeight / 2 - 10
 
