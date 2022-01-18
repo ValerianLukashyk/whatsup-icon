@@ -296,79 +296,69 @@
     dragElement(widget);
     function dragElement(elmnt) {
       iconLink.onmousedown = dragMouseDown;
-      iconLink.ontouchstart = dragMouseDown;
 
       function dragMouseDown(e) {
-        // e.preventDefault()
-        document.documentElement.style.overflow = 'hidden';
-
+        e.stopPropagation()
         document.onmousemove = elementDrag;
-        document.ontouchmove = elementDrag;
         document.onmouseup = closeDragElement;
-        document.ontouchend = closeDragElement;
-
-        
-
+        e.returnValue = false
       }
+    }
 
-      function elementDrag(e) {
-        document.documentElement.style.overflow = 'hidden';
-        // e.preventDefault()
-        const offset = window.innerHeight - clientY - elmnt.offsetHeight / 2 - 10
+    const elementDrag = (e) => {
+      e.preventDefault()
+      const offset = window.innerHeight - clientY - widget.offsetHeight / 2 - 10
+      iconLink.style.pointerEvents = 'none'
+      clientX = e.clientX || e.touches[0].clientX + iconLink.offsetWidth + 10
+      clientY = e.clientY || e.touches[0].clientY
 
-        iconLink.style.pointerEvents = 'none'
-        clientX = e.clientX || e.touches[0].clientX + iconLink.offsetWidth + 10
-        clientY = e.clientY || e.touches[0].clientY
+      widget.style.bottom = offset < 0 ? 0 : offset > window.innerHeight - widget.offsetHeight / 2 - 30 ? window.innerHeight - widget.offsetHeight / 2 - 30 : offset + "px";
+      widget.style.right = (window.innerWidth - clientX - widget.offsetWidth / 2 + 10) + "px";
+    }
 
-        elmnt.style.bottom = offset < 0 ? 0 : offset > window.innerHeight - elmnt.offsetHeight / 2 - 30 ? window.innerHeight - elmnt.offsetHeight / 2 - 30 : offset + "px";
-        elmnt.style.right = (window.innerWidth - clientX - elmnt.offsetWidth / 2 + 10) + "px";
-        // e.returnValue - false
-      }
+    const closeDragElement = (e) => {
+      document.onmouseup = null;
+      document.onmousemove = null;
+      // document.ontouchend = null
+      // document.ontouchmove = null
+      setTimeout(() => {
+        iconLink.style.pointerEvents = 'auto'
+      }, duration)
 
-      function closeDragElement(e) {
-        document.onmouseup = null;
-        document.onmousemove = null;
-        document.ontouchend = null
-        document.ontouchmove = null
+      // MAKE IT STICKY WHEN DRAG IS FINISHED
+      const offset = window.innerWidth - clientX - widget.offsetWidth / 2 + 10
+      const offsetRight = window.innerWidth / 2 - widget.offsetWidth / 2 + 10
 
-        document.documentElement.style.overflow = 'auto';
-
-        setTimeout(() => {
-          iconLink.style.pointerEvents = 'auto'
-        }, duration)
-
-        // MAKE IT STICKY WHEN DRAG IS FINISHED
-        const offset = window.innerWidth - clientX - elmnt.offsetWidth / 2 + 10
-        const offsetRight = window.innerWidth / 2 - elmnt.offsetWidth / 2 + 10
-
-        if (offset > -560 && offset < offsetRight) {
-          const player = elmnt.animate([
-            { right: rightStickyPosition }
-          ], {
-            duration: duration,
-            iterations: 1,
-            fill: 'forwards'
-          });
-          player.onfinish = function (e) {
-            elmnt.style.right = rightStickyPosition
-            player.cancel()
-          }
-        } else {
-          const offset = e.type === 'touchend' ? 75 : 25
-          const player = elmnt.animate([
-            { right: window.innerWidth - elmnt.offsetWidth / 2 - offset + 'px' }
-          ], {
-            duration: duration,
-            iterations: 1,
-            fill: 'forwards'
-          });
-          player.onfinish = function (e) {
-            elmnt.style.right = window.innerWidth - elmnt.offsetWidth / 2 - offset + 'px'
-            player.cancel()
-          }
+      if (offset > -560 && offset < offsetRight) {
+        const player = widget.animate([
+          { right: rightStickyPosition }
+        ], {
+          duration: duration,
+          iterations: 1,
+          fill: 'forwards'
+        });
+        player.onfinish = function (e) {
+          widget.style.right = rightStickyPosition
+          player.cancel()
+        }
+      } else {
+        const offset = e.type === 'touchend' ? 75 : 25
+        const player = widget.animate([
+          { right: window.innerWidth - widget.offsetWidth / 2 - offset + 'px' }
+        ], {
+          duration: duration,
+          iterations: 1,
+          fill: 'forwards'
+        });
+        player.onfinish = function (e) {
+          widget.style.right = window.innerWidth - widget.offsetWidth / 2 - offset + 'px'
+          player.cancel()
         }
       }
     }
+
+    iconLink.addEventListener('touchmove', elementDrag)
+    iconLink.addEventListener('touchend', closeDragElement)
 
     // SHOW MESSAGE ON HOVER
     iconLink.addEventListener('mouseenter', () => {
