@@ -307,19 +307,20 @@
 
         document.onmousemove = elementDrag;
         document.ontouchmove = elementDrag;
+        e.returnValue = false;
       }
       
       function elementDrag(e) {
-        // if (e.type === 'mousemove') {
-        //   e.preventDefault();
-        // }
+        if (e.type === 'mousemove') {
+          e.preventDefault();
+        }
         iconLink.style.pointerEvents = 'none'
         clientX = e.clientX || e.touches[0].clientX + iconLink.offsetWidth + 10
         clientY = e.clientY || e.touches[0].clientY
 
         elmnt.style.bottom = (window.innerHeight - clientY - elmnt.offsetHeight / 2 - 10) + "px";
         elmnt.style.right = (window.innerWidth - clientX - elmnt.offsetWidth / 2 +10) + "px";
-        return false
+        e.returnValue = false;
       }
 
       function closeDragElement(e) {
@@ -361,10 +362,10 @@
             player.cancel()
           }
         }
-
+        e.returnValue = false;
       }
     }
-
+    
     // SHOW MESSAGE ON HOVER
     iconLink.addEventListener('mouseenter', () => {
       messageLink.style.opacity = 1
